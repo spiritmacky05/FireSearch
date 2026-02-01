@@ -1,6 +1,7 @@
+
 import React from 'react';
-import { EstablishmentType, OccupancyType, SearchParams } from '../types';
-import { ESTABLISHMENT_TYPES, OCCUPANCY_TYPES } from '../constants';
+import { EstablishmentType, SearchParams } from '../types';
+import { ESTABLISHMENT_TYPES } from '../constants';
 
 interface SearchFormProps {
   params: SearchParams;
@@ -15,7 +16,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ params, setParams, onSubmit, is
     setParams(prev => ({ ...prev, [name]: value }));
   };
 
-  const isFormValid = params.establishmentType && params.area && params.occupancyType;
+  const isFormValid = params.establishmentType && params.area && params.stories;
 
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg border border-slate-200">
@@ -42,33 +43,31 @@ const SearchForm: React.FC<SearchFormProps> = ({ params, setParams, onSubmit, is
           </select>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Total Floor Area (SQM)</label>
-          <input
-            type="number"
-            name="area"
-            value={params.area}
-            onChange={handleChange}
-            placeholder="e.g. 150"
-            className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white"
-            disabled={isLoading}
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-slate-700 mb-1">Type of Occupancy Application</label>
-          <select
-            name="occupancyType"
-            value={params.occupancyType}
-            onChange={handleChange}
-            className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white"
-            disabled={isLoading}
-          >
-            <option value="" disabled>Select Occupancy Type</option>
-            {OCCUPANCY_TYPES.map((type) => (
-              <option key={type} value={type}>{type}</option>
-            ))}
-          </select>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">Floor Area (SQM)</label>
+            <input
+              type="number"
+              name="area"
+              value={params.area}
+              onChange={handleChange}
+              placeholder="e.g. 150"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white"
+              disabled={isLoading}
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-slate-700 mb-1">No. of Story</label>
+            <input
+              type="number"
+              name="stories"
+              value={params.stories}
+              onChange={handleChange}
+              placeholder="e.g. 2"
+              className="w-full px-4 py-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors bg-white"
+              disabled={isLoading}
+            />
+          </div>
         </div>
 
         <button

@@ -1,19 +1,15 @@
+
 import { GoogleGenAI, Chat } from "@google/genai";
 import { SearchParams, AiResponse } from '../types';
 import { FIRE_CODE_CONTEXT } from '../constants';
 
-const API_KEY = process.env.API_KEY || ''; // Injected by environment
-
-const ai = new GoogleGenAI({ apiKey: API_KEY });
+// Initialize the Gemini API client directly using process.env.API_KEY as per guidelines
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export const generateFireSafetyReport = async (params: SearchParams): Promise<AiResponse> => {
-  if (!API_KEY) {
-    throw new Error("API Key is missing. Please check your environment configuration.");
-  }
-
   const systemInstruction = `
 Role:
-You are FIRE SEARCH, an intelligent Fire Code reference and inspection assistant for the Bureau of Fire Protection (BFP).
+You are Super FC AI, an intelligent Fire Code reference and inspection assistant for the Bureau of Fire Protection (BFP).
 
 Primary Function:
 Analyze the provided Fire Code context (based on RA 9514 and its RIRR) and return accurate, structured, and inspection-ready information based on the user's establishment details.
@@ -23,7 +19,7 @@ ${FIRE_CODE_CONTEXT}
 
 Response Behavior:
 1.  **Establishment Overview**: Classify the occupancy based on the input.
-2.  **Fire Safety Requirements**: List specific requirements (Egress, Alarms, Sprinklers) based on the size and type provided. Cite specific sections from the Context if available.
+2.  **Fire Safety Requirements**: List specific requirements (Egress, Alarms, Sprinklers) based on the size, number of stories, and type provided. Cite specific sections from the Context if available.
 3.  **Inspection Checklist**: Provide a bulleted list of items an inspector should check physically.
 4.  **Legal Basis**: Cite the specific Section/Rule numbers found in the context.
 5.  **Notes for Inspector**: Practical reminders or common deficiencies for this specific type.
@@ -39,12 +35,13 @@ Constraint:
 Generate a Fire Safety Inspection Report for:
 - Type of Establishment: ${params.establishmentType}
 - Measurement: ${params.area} SQM
-- Type of Occupancy: ${params.occupancyType}
+- Number of Stories: ${params.stories}
 `;
 
   try {
+    // Using gemini-3-pro-preview for complex reasoning task as per model selection guidelines
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-pro-preview',
       contents: userPrompt,
       config: {
         systemInstruction: systemInstruction,
@@ -52,6 +49,7 @@ Generate a Fire Safety Inspection Report for:
       },
     });
 
+    // Access .text property directly as it is a property, not a method
     return {
       markdown: response.text || "No response generated.",
     };
@@ -62,12 +60,8 @@ Generate a Fire Safety Inspection Report for:
 };
 
 export const createChatSession = (reportContext: string) => {
-  if (!API_KEY) {
-    throw new Error("API Key is missing.");
-  }
-
   const systemInstruction = `
-You are a helpful Fire Safety assistant. 
+You are Super FC AI, a helpful Fire Safety assistant. 
 The user is viewing a generated inspection report based on RA 9514. 
 Answer their follow-up questions specifically about the report or general fire safety rules.
 Always refer to the provided context if possible.
@@ -79,22 +73,65 @@ ORIGINAL REFERENCE MATERIAL:
 ${FIRE_CODE_CONTEXT}
 `;
 
+  // Create chat session with appropriate model for conversational reasoning
   return ai.chats.create({
-    model: 'gemini-2.5-flash',
+    model: 'gemini-3-pro-preview',
     config: {
       systemInstruction: systemInstruction,
     },
   });
 };
 
-export const generateNTC = async (params: SearchParams, violations: string): Promise<string> => {
-  if (!API_KEY) {
-    throw new Error("API Key is missing.");
-  }
+export const createGeneralAssistantSession = () => {
+  const systemInstruction = `
+You are Super FC AI, the ultimate expert on Republic Act No. 9514 (Fire Code of the Philippines) and its 2019 Revised Implementing Rules and Regulations (RIRR).
 
+Your goal is to provide highly detailed, authoritative, and structured responses.
+
+Source Knowledge Base:
+${FIRE_CODE_CONTEXT}
+
+STRICT RESPONSE STRUCTURE:
+For every inquiry, you must organize your response using these EXACT headers. Use bullet points for detailed sections to make them easier to read.
+
+### 🏷️ TITLE/LABEL
+(A concise title for the topic.)
+
+### 📖 EXPLANATION
+(Provide a deep technical explanation. **USE BULLET POINTS** to break down the logic, physical requirements, and technical standards. Be extremely detailed.)
+
+### ⚖️ LEGAL BASIS
+(Provide accurate citations. **USE BULLET POINTS**. Format: "Section 10.X.X.X para X of the RIRR 2019". Cite multiple sections if they overlap.)
+
+### 💰 PENALTIES
+(State the exact PHP amounts of administrative fines from Rule 13. Example: "Failure to provide fire alarm: Php 25,000.00 to Php 37,500.00". Mention possible 'Abatement Orders' or 'Closure'.)
+
+### 🛠️ RECOMMENDATION
+(Provide actionable steps for the building owner or inspector to ensure 100% compliance.)
+
+### 💡 ADDITIONAL INSIGHT
+(Any other helpful information or common inspection pitfalls.)
+
+IMPORTANT RULES:
+- If a citation is not in your context, do not make one up.
+- Use professional, authoritative, but helpful language.
+- Ensure all numbers and amounts are clear.
+`;
+
+  // Use gemini-3-pro-preview for expert assistant tasks requiring high reasoning capabilities
+  return ai.chats.create({
+    model: 'gemini-3-pro-preview',
+    config: {
+      systemInstruction: systemInstruction,
+      temperature: 0.1,
+    },
+  });
+};
+
+export const generateNTC = async (params: SearchParams, violations: string): Promise<string> => {
   const systemInstruction = `
 Role:
-You are an intelligent Fire Code reference assistant.
+You are Super FC AI, an intelligent Fire Code reference assistant.
 
 Task:
 Convert the list of observed violations into a structured Notice to Comply (NTC) detail list.
@@ -131,7 +168,7 @@ Instructions:
 Establishment Details:
 - Type: ${params.establishmentType}
 - Area: ${params.area} SQM
-- Occupancy: ${params.occupancyType}
+- Stories: ${params.stories}
 
 Observed Violations/Defects:
 ${violations}
@@ -140,8 +177,9 @@ Generate the detailed NTC list.
 `;
 
   try {
+    // Using gemini-3-pro-preview for mapping violations to specific code sections
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-pro-preview',
       contents: userPrompt,
       config: {
         systemInstruction: systemInstruction,

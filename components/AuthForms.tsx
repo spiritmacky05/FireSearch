@@ -68,7 +68,7 @@ const AuthForms: React.FC<AuthFormsProps> = ({ onLogin }) => {
         <div className="text-center">
           <div className="mx-auto h-16 w-16 bg-gradient-to-br from-orange-400 to-red-600 rounded-full flex items-center justify-center text-white text-3xl font-bold shadow-lg transform transition hover:scale-105">🔥</div>
           <h2 className="mt-6 text-3xl font-extrabold text-slate-900 tracking-tight">
-            {view === 'login' && 'Sign in to FireCode Search'}
+            {view === 'login' && 'Sign in to Super FC AI'}
             {view === 'signup' && 'Create Account'}
             {view === 'forgot' && 'Reset Password'}
           </h2>

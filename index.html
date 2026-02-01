@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FIRECODE SEARCH - Fire Safety Inspector AI Assistant</title>
+    <title>Super FC AI - Fire Code Assistant</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -34,6 +35,17 @@
       .markdown-body strong { font-weight: 700; color: #0f172a; }
       .markdown-body blockquote { border-left: 4px solid #e5e7eb; padding-left: 1rem; font-style: italic; color: #4b5563; margin-bottom: 1.5rem; }
       .markdown-body hr { border: 0; border-top: 1px solid #e2e8f0; margin: 2rem 0; }
+
+      /* Override for user chat bubbles to ensure white text */
+      .markdown-body.user-message p, 
+      .markdown-body.user-message li, 
+      .markdown-body.user-message strong,
+      .markdown-body.user-message h1,
+      .markdown-body.user-message h2,
+      .markdown-body.user-message h3,
+      .markdown-body.user-message h4 {
+        color: white !important;
+      }
     </style>
   <script type="importmap">
 {

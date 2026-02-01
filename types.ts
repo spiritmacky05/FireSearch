@@ -1,3 +1,4 @@
+
 export enum EstablishmentType {
   Residential = 'Residential',
   Business = 'Business',
@@ -20,7 +21,7 @@ export enum OccupancyType {
 export interface SearchParams {
   establishmentType: EstablishmentType | '';
   area: string;
-  occupancyType: OccupancyType | '';
+  stories: string;
 }
 
 export interface AiResponse {

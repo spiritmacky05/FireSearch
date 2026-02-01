@@ -1,3 +1,4 @@
+
 import { EstablishmentType, OccupancyType } from './types';
 
 export const ESTABLISHMENT_TYPES = Object.values(EstablishmentType);
@@ -103,10 +104,20 @@ FIRE SAFETY GUIDELINES ON DIFFERENT TYPE OF OCCUPANCY VOLUME 2 (Based on RIRR of
   - Sprinklers: Required for high hazard.
   - Alarm: Automatic for all storage except low hazard <2000sqm.
 
+12. ADMINISTRATIVE FINES AND PENALTIES (Rule 13)
+- Obstruction of exit ways (Corridors/Stairs): Php 37,500.00 to Php 50,000.00 per violation.
+- Failure to install fire protection (AFSS/Sprinklers): Php 37,500.00 to Php 50,000.00.
+- Failure to provide/maintain fire alarm system: Php 25,000.00 to Php 37,500.00.
+- Lack of Fire Safety Certificate (FSIC): Php 12,500.00 to Php 25,000.00.
+- Failure to conduct fire drill/seminar: Php 5,000.00 to Php 12,500.00.
+- Use of unauthorized electrical wiring/Octopus connection: Php 12,500.00 to Php 25,000.00.
+- Overcrowding beyond occupant load: Php 25,000.00 to Php 37,500.00.
+- Non-compliance with NTC (Notice to Comply): Progression to 'Notice to Correct Violation' and eventually 'Abatement Order'.
+
 GENERAL INSPECTION NOTES:
 - Use of "NO SMOKING" signs in hazardous areas.
 - Maintenance of Means of Egress (free from obstruction).
-- Regular testing of emergency lights and fire alarms.
-- Fire extinguishers must be mounted, visible, and tagged.
-- Electrical wirings must be compliant with PEC.
+- Regular testing of emergency lights and fire alarms (Monthly/Quarterly).
+- Fire extinguishers must be mounted, visible, tagged, and distributed correctly.
+- Electrical wirings must be compliant with Philippine Electrical Code (PEC).
 `;

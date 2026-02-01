@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { SavedReport } from '../types';
 
@@ -39,7 +40,6 @@ const HistoryView: React.FC<HistoryViewProps> = ({ reports, onSelect, onBack }) 
                     {report.params.establishmentType}
                   </h3>
                   <div className="text-sm text-slate-500 mt-1 space-y-1">
-                    <p>Occupancy: {report.params.occupancyType}</p>
                     <p>Area: {report.params.area} SQM</p>
                   </div>
                 </div>
